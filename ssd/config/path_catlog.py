@@ -52,6 +52,10 @@ class DatasetCatalog:
             "data_dir": "val2014",
             "ann_file": "annotations/instances_val2014.json"
         },
+        'SKU110K': {
+            "data_dir": "SKU110K_fixed/images",
+            "split": "train"
+        },
     }
 
     @staticmethod
@@ -78,5 +82,18 @@ class DatasetCatalog:
                 ann_file=os.path.join(coco_root, attrs["ann_file"]),
             )
             return dict(factory="COCODataset", args=args)
+        elif "SKU110K" in name:
+            sku_root = DatasetCatalog.DATA_DIR
+            # if 'VOC_ROOT' in os.environ:
+            #     voc_root = os.environ['VOC_ROOT']
+
+            attrs = DatasetCatalog.DATASETS[name]
+            SKU110K_root = "/content/SSD/datasets"
+            args = dict(
+                # data_dir=os.path.join(SKU110K_root, attrs["data_dir"]),
+                data_dir="/content/SSD/datasets/SKU110K_fixed",
+                split=attrs["split"],
+            )
+            return dict(factory="SKU110KDataset", args=args)
 
         raise RuntimeError("Dataset not available: {}".format(name))
