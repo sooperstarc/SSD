@@ -7,7 +7,7 @@ from PIL import Image
 from vizer.draw import draw_boxes
 
 from ssd.config import cfg
-from ssd.data.datasets import COCODataset, VOCDataset
+from ssd.data.datasets import COCODataset, VOCDataset, CustomDataset
 import argparse
 import numpy as np
 
@@ -23,6 +23,8 @@ def run_demo(cfg, ckpt, score_threshold, images_dir, output_dir, dataset_type):
         class_names = VOCDataset.class_names
     elif dataset_type == 'coco':
         class_names = COCODataset.class_names
+    elif dataset_type == 'customdataset':
+        class_names = CustomDataset.class_names
     else:
         raise NotImplementedError('Not implemented now.')
     device = torch.device(cfg.MODEL.DEVICE)
@@ -34,7 +36,8 @@ def run_demo(cfg, ckpt, score_threshold, images_dir, output_dir, dataset_type):
     weight_file = ckpt if ckpt else checkpointer.get_checkpoint_file()
     print('Loaded weights from {}'.format(weight_file))
 
-    image_paths = glob.glob(os.path.join(images_dir, '*.jpg'))
+    # image_paths = glob.glob(os.path.join(images_dir, '*.jpg'))
+    image_paths = glob.glob(os.path.join(images_dir, '*.png'))
     mkdir(output_dir)
 
     cpu_device = torch.device("cpu")
