@@ -56,6 +56,10 @@ class DatasetCatalog:
             "data_dir": "SKU110K_fixed/images",
             "split": "train"
         },
+        'CustomDataset': {
+            "data_dir": "CustomDataset",
+            "split": "trainval"
+        },
     }
 
     @staticmethod
@@ -95,5 +99,15 @@ class DatasetCatalog:
                 split=attrs["split"],
             )
             return dict(factory="SKU110KDataset", args=args)
+        elif "Custom" in name:
+            custom_root = '/content/datasets'
+
+            attrs = DatasetCatalog.DATASETS[name]
+            args = dict(
+                # data_dir=os.path.join(SKU110K_root, attrs["data_dir"]),
+                data_dir="/content/datasets/CustomDataset",
+                split=attrs["split"],
+            )
+            return dict(factory="CustomDataset", args=args)
 
         raise RuntimeError("Dataset not available: {}".format(name))

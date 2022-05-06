@@ -1,0 +1,18 @@
+MODEL:
+  NUM_CLASSES: 7
+INPUT:
+  IMAGE_SIZE: 300
+DATASETS:
+  TRAIN: ("CustomDataset",)
+  TEST: ("CustomDataset",)
+DATA_LOADER:
+  NUM_WORKERS: 4
+  PIN_MEMORY: True
+SOLVER:
+  MAX_ITER: 100000
+  LR_STEPS: [80000, 90000]
+  GAMMA: 0.1
+  BATCH_SIZE: 32
+  LR: 1e-3
+
+OUTPUT_DIR: 'outputs/custom_dataset'
