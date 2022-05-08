@@ -2,7 +2,7 @@ import os
 
 
 class DatasetCatalog:
-    DATA_DIR = 'datasets'
+    DATA_DIR = '/content/datasets'
     DATASETS = {
         'voc_2007_train': {
             "data_dir": "VOC2007",
@@ -52,13 +52,13 @@ class DatasetCatalog:
             "data_dir": "val2014",
             "ann_file": "annotations/instances_val2014.json"
         },
-        'SKU110K': {
-            "data_dir": "SKU110K_fixed/images",
-            "split": "train"
+        'custom_train': {
+            "data_dir": "main",
+            "split": "ImageSets/ssd/train"
         },
-        'CustomDataset': {
-            "data_dir": "CustomDataset",
-            "split": "trainval"
+        'custom_valid': {
+            "data_dir": "main",
+            "split": "ImageSets/ssd/valid"
         },
     }
 
@@ -86,26 +86,12 @@ class DatasetCatalog:
                 ann_file=os.path.join(coco_root, attrs["ann_file"]),
             )
             return dict(factory="COCODataset", args=args)
-        elif "SKU110K" in name:
-            sku_root = DatasetCatalog.DATA_DIR
-            # if 'VOC_ROOT' in os.environ:
-            #     voc_root = os.environ['VOC_ROOT']
-
-            attrs = DatasetCatalog.DATASETS[name]
-            SKU110K_root = "/content/SSD/datasets"
-            args = dict(
-                # data_dir=os.path.join(SKU110K_root, attrs["data_dir"]),
-                data_dir="/content/SSD/datasets/SKU110K_fixed",
-                split=attrs["split"],
-            )
-            return dict(factory="SKU110KDataset", args=args)
-        elif "Custom" in name:
-            custom_root = '/content/datasets'
-
+        elif "custom" in name:
+            custom_root = DatasetCatalog.DATA_DIR
+            
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
-                # data_dir=os.path.join(SKU110K_root, attrs["data_dir"]),
-                data_dir="/content/datasets/CustomDataset",
+                data_dir=os.path.join(custom_root, attrs["data_dir"]),
                 split=attrs["split"],
             )
             return dict(factory="CustomDataset", args=args)
